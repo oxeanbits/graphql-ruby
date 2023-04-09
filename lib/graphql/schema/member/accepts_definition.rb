@@ -139,6 +139,9 @@ module GraphQL
                 instance_variable_set("@#{method_name}_args", value)
               end
             end
+            if args.size > 3
+              kwargs.merge!(args.pop)
+            end
             super(*args, **kwargs, &block)
           end
 
