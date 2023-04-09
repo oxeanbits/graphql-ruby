@@ -44,8 +44,8 @@ module GraphQL
 
       class << self
         def run_all(schema, query_options, *args)
-          queries = query_options.map { |opts| GraphQL::Query.new(schema, nil, opts) }
-          run_queries(schema, queries, *args)
+          queries = query_options.map { |opts| GraphQL::Query.new(schema, nil, **opts) }
+          run_queries(schema, queries, **args[0])
         end
 
         # @param schema [GraphQL::Schema]
@@ -82,7 +82,7 @@ module GraphQL
           end
 
           # Then, work through lazy results in a breadth-first way
-          GraphQL::Execution::Execute::ExecutionFunctions.lazy_resolve_root_selection(results, { multiplex: multiplex })
+          GraphQL::Execution::Execute::ExecutionFunctions.lazy_resolve_root_selection(results, multiplex: multiplex)
 
           # Then, find all errors and assign the result to the query object
           results.each_with_index.map do |data_result, idx|
